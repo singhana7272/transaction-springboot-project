@@ -6,9 +6,13 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -74,4 +78,17 @@ public class TransactionController  {
     public ResponseEntity<List<Transaction>> getTransactionsUnderRange(String startDate, String endDate){
     	return new ResponseEntity<List<Transaction>>(transactionService.getTransactionsUnderRange(startDate, endDate), HttpStatus.OK);
     }
+    
+    @GetMapping(path = "createDummy")
+    public String createDummyTransaction() {
+    	if( transactionService.createDummyTransactions())
+    			return "Dummy Transactions created successfully";
+    	return "Something went wrong";
+    }
+    
+    @GetMapping("/transactions/paginated") 
+    public ResponseEntity<Page<Transaction>> findPaginatedTransactionBetweenDates(String startDate,String endDate,Integer pageNo,Integer pageSize) {
+        Page<Transaction> transactions = transactionService.findPaginatedTransactionBetweenDates(startDate, endDate, pageNo, pageSize);
+        return new ResponseEntity<Page<Transaction>>(transactions, HttpStatus.OK);
+    }   
 }
