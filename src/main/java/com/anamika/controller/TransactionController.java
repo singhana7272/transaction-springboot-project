@@ -86,7 +86,8 @@ public class TransactionController  {
     	return "Something went wrong";
     }
     
-    @GetMapping("/transactions/paginated") 
+
+    @GetMapping("/transactions/paginated")
     public ResponseEntity<Page<Transaction>> findPaginatedTransactionBetweenDates(String startDate,String endDate,Integer pageNo,Integer pageSize) {
         Page<Transaction> transactions = transactionService.findPaginatedTransactionBetweenDates(startDate, endDate, pageNo, pageSize);
         return new ResponseEntity<Page<Transaction>>(transactions, HttpStatus.OK);
